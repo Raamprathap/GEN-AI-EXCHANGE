@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/2db523e843.js" crossorigin="anonymous"></script>
+    <title>MindMate</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: #F3F4F6;
+            color: #202123;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #1F2937;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .sidebar-header i {
+            font-size: 24px;
+            color: #60A5FA;
+        }
+
+        .sidebar h1 {
+            color: #FFFFFF;
+            font-size: 24px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #374151;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #4B5563;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #D1D5DB;
+        }
+
+        .sidebar ul li.active {
+            background-color: #60A5FA;
+        }
+
+        .sidebar ul li.active a {
+            color: #FFFFFF;
+        }
+
+        .footer-sidebar {
+            margin-top: 20px;
+            color: #9CA3AF;
+            font-size: 12px;
+        }
+
+        .chat-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .chat-header {
+            padding: 20px;
+            background-color: #FFFFFF;
+            color: #1F2937;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 1px solid #E5E7EB;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header .user-img img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            object-fit: cover;
+        }
+
+        .chat-body {
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+            background-color: #FFFFFF;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message.user {
+            align-items: flex-end;
+        }
+
+        .message-content {
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+
+        .message.user .message-content {
+            background-color: #60A5FA;
+            color: #FFFFFF;
+        }
+
+        .message.assistant .message-content {
+            background-color: #F3F4F6;
+            color: #1F2937;
+        }
+
+        .chat-input-container {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: #FFFFFF;
+            border-top: 1px solid #E5E7EB;
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            padding: 12px 20px;
+            background-color: #F3F4F6;
+            color: #1F2937;
+            border: 1px solid #E5E7EB;
+            border-radius: 25px;
+            outline: none;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .chat-input:focus {
+            border-color: #60A5FA;
+        }
+
+        .send-button {
+            background-color: #60A5FA;
+            color: #FFFFFF;
+            border: none;
+            padding: 12px 24px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .send-button:hover {
+            background-color: #3B82F6;
+        }
+
+        .menu {
+            position: absolute;
+            margin-top: 30px;
+            margin-left: 40px;
+            width: 250px;
+            max-height: 0;
+            background: #FFFFFF;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-radius: 8px;
+            overflow: hidden;
+            top: 70px;
+            right: 20px;
+            z-index: 200;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .menu.show {
+            max-height: 400px;
+        }
+        .user-img {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 8px;
+        background-color: #f0f0f0;
+        transition: background-color 0.3s ease;
+    }
+
+    .user-img:hover {
+        background-color: #e0e0e0;
+    }
+
+    .user-img img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%; /* Makes the image circular */
+        margin-right: 10px;
+        object-fit: cover; /* Ensures the image is properly cropped */
+    }
+
+    .user-img span {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        transition: color 0.3s ease;
+    }
+
+    .user-img:hover span {
+        color: #007bff; /* Changes text color on hover */
+    }
+
+        .user-profile {
+            padding: 15px;
+            transition: background-color 0.3s, box-shadow 0.3s; 
+        }
+
+        .user-profile a {
+        text-decoration: none; /* Remove underline from link */
+        color: #333; /* Text color */
+    }
+
+        .user-profile a:hover {
+        color: #007bff; /* Change text color on hover */
+    }
+
+        .user-profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .user-profile p {
+            font-size: 18px; /* Larger font for name */
+        font-weight: bold;
+        margin: 0;
+        color: #333;
+        }
+
+        .user-profile small {
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        .menu hr {
+            border: 0;
+            height: 1px;
+            background: #E5E7EB;
+            margin: 10px 0;
+        }
+
+        .user-profile:hover {
+        background-color: #f1f1f1; /* Slightly darker background on hover */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* More prominent shadow on hover */
+    }
+
+        .settings-links {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            text-decoration: none; /* Remove underline */
+            color: #000; /* Default color */
+            color: #1F2937;
+            transition: background-color 0.3s ease;
+        }
+
+        .settings-links:hover {
+           color: #007bff; /* Change text color on hover */
+        background-color: #f1f1f1; /* Optional: background on hover */
+        border-radius: 5px;
+        padding-left: 12px; /* Extra padding on hover */
+        padding-right: 12px;
+        }
+
+        .settings-links img {
+            width: 20px;
+            margin-right: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -250px;
+                height: 100%;
+                z-index: 1000;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .chat-header {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-brain"></i>
+            <h1><a href="index.html" style="text-decoration: none;color: white;">MindMate</a></h1>
+        </div>
+        <ul>
+            <li class="active"><a href="#">Today</a></li>
+            <li><a href="#">Yesterday</a></li>
+            <li><a href="#">Previous 7 Days</a></li>
+        </ul>
+        <div class="footer-sidebar">
+            <p>&copy; 2024 MindMate. All rights reserved.</p>
+        </div>
+    </div>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <span>Chat with MindMate</span>
+            <div class="user-img" onclick="showmenu()">
+                <img src="user_img.png" alt="User" >
+                <span>Akshay KS</span> <!-- User text -->
+            </div>
+        </div>
+
+        <div class="chat-body" id="chat-body"></div>
+
+        <div class="chat-input-container">
+            <input type="text" class="chat-input" id="user-input" placeholder="Type your message...">
+            <button class="send-button" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <div class="menu" id="menu">
+        <div class="user-profile">
+            <a href="/UserProfile/user.html">
+                <div>
+                    <p>Akshay KS</p>
+                    <small>akshayks1005@gmail.com</small>
+                </div>
+            </a>
+        </div>
+        <hr>
+        <a href="#" class="settings-links">
+            <i class="fas fa-cogs"></i> Settings & Privacy
+        </a>
+        <a href="#" class="settings-links">
+            <i class="fas fa-question-circle"></i> Help & Support
+        </a>
+        <a href="#" class="settings-links">
+            <i class="fas fa-display"></i> Display & Accessibility
+        </a>
+        <a href="SiginPage/signin.html" class="settings-links">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>    
+
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        const menu = document.getElementById("menu");
+        const sidebar = document.getElementById("sidebar");
+        
+        function showmenu() {
+            menu.classList.toggle("show");
+        }
+
+        function toggleSidebar() {
+            sidebar.classList.toggle("show");
+        }
+
+        document.addEventListener('click', function(event) {
+            if (!menu.contains(event.target) && !event.target.matches('.user-img img')) {
+                menu.classList.remove('show');
+            }
+        });
+
+        const apiKey = 'AIzaSyDdVPUkr-pqhR_lWZ8t046DoMj0MYuILd0'; // Replace with your actual API key
+        const modelEndpoint = 'https://api.openai.com/v1/chat/completions';
+
+        const generationConfig = {
+            temperature: 0.7,
+            max_tokens: 150,
+            top_p: 1,
+            frequency_penalty: 0,
+            presence_penalty: 0,
+        };
+
+        let history = [];
+
+        async function getResponse(userMessage) {
+            try {
+                const responseText = await sendPrompt(userMessage);
+                history.push({ role: 'user', content: userMessage });
+                history.push({ role: 'assistant', content: responseText });
+                return responseText;
+            } catch (error) {
+                console.error('Error:', error.message);
+                return 'An error occurred. Please try again.';
+            }
+        }
+
+        async function sendPrompt(message) {
+            const requestBody = {
+                model: "gpt-3.5-turbo",
+                messages: [...history, { role: "user", content: message }],
+                ...generationConfig
+            };
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`,
+            };
+
+            try {
+                const response = await axios.post(modelEndpoint, requestBody, { headers });
+                return response.data.choices[0].message.content.trim();
+            } catch (error) {
+                console.error("API Error:", error.response ? error.response.data : error.message);
+                throw new Error(error.response ? error.response.data.error.message : error.message);
+            }
+        }
+
+        var count = 0;
+
+        async function sendMessage() {
+            var userInput = document.getElementById('user-input').value.trim();
+            if (userInput === '') return;
+
+            appendUserMessage(userInput);
+            document.getElementById('user-input').value = '';
+
+            const responses = [
+                "Hello! 😊 I'm glad you reached out. It sounds like you might be looking for someone to talk to. I'm here to listen and offer support.\nTell me, what's on your mind today? No pressure to share anything specific if you're not ready. Just knowing someone's here can be helpful sometimes. 💖",
+                "That sounds really tough. 😔 It's completely understandable to feel overwhelmed sometimes, especially as a student. There's a lot going on!\nWould you like to tell me a little bit about what's making you feel this way right now? We can try to unpack it together. Just remember, you don't have to go into any details you don't want to. 😊",
+                "That's a really valid concern, exams can definitely be scary! 😨 It's completely natural to feel stressed about them.\nLet's try to break down this feeling of being overwhelmed. 💪\n* What exams are you most worried about?\n* When are the exams scheduled?\nKnowing these details will help us figure out the best ways to tackle your worries and make a plan. We can explore study strategies, time management tips, and ways to manage exam anxiety. You got this! 👍"
+            ];
+
+            if (count < responses.length) {
+                appendAssistantMessage(responses[count]);
+                count++;
+            } else {
+                try {
+                    const response = await getResponse(userInput);
+                    appendAssistantMessage(response);
+                } catch (error) {
+                    appendAssistantMessage('Error in generating response. Please try again.');
+                }
+            }
+        }
+
+        function appendUserMessage(message) {
+            var chatBody = document.getElementById('chat-body');
+            var messageDiv = document.createElement('div');
+            messageDiv.className = 'message user';
+            messageDiv.innerHTML = '<div class="message-content">' + escapeHTML(message) + '</div>';
+            chatBody.appendChild(messageDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function appendAssistantMessage(message) {
+            var chatBody = document.getElementById('chat-body');
+            var messageDiv = document.createElement('div');
+            messageDiv.className = 'message assistant';
+            messageDiv.innerHTML = '<div class="message-content">' + escapeHTML(message) + '</div>';
+            chatBody.appendChild(messageDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function escapeHTML(unsafe) {
+            return unsafe
+                 .replace(/&/g, "&amp;")
+                 .replace(/</g, "&lt;")
+                 .replace(/>/g, "&gt;")
+                 .replace(/"/g, "&quot;")
+                 .replace(/'/g, "&#039;");
+        }
+
+        document.getElementById('user-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

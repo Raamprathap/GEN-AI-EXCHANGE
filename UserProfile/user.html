@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindMate - Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="user.css">
+</head>
+<body>
+    <div class="container">
+        <button class="back-button"><i class="fas fa-arrow-left"></i> Back</button>
+        <!-- Left-side Menu -->
+        <div class="sidebar">
+            <!-- <button class="back-button"><i class="fas fa-arrow-left"></i> Back</button> -->
+            <ul>
+                <li class="active"><i class="fas fa-user"></i> User Information</li>
+                <li><i class="fas fa-heart"></i> User Mood</li>
+                <li><i class="fas fa-chart-line"></i> Mood Trends</li>
+                <li><i class="fas fa-comments"></i> Support Chat</li>
+                <li><i class="fas fa-cog"></i> Settings</li>
+            </ul>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="content">
+            <!-- User Information Tab -->
+            <div class="card" id="user-info">
+                <img src="userimg.png" alt="Profile pic">
+                <div class="details">
+                    <h3>Akshay KS</h3>
+                    <p><i class="fas fa-envelope"></i> Email: akshayks1005@gmail.com</p>
+                    <p><i class="fas fa-user"></i> Username: akshay_13</p>
+                    <p><i class="fas fa-birthday-cake"></i> Age: 19</p>
+                    <p><i class="fas fa-phone"></i> Phone: +91-7530001011</p>
+                    <p><i class="fas fa-calendar-alt"></i> Date of Birth: June 13, 2005</p>
+                    <p><i class="fas fa-graduation-cap"></i> Major: Computer Science</p>
+                    <p><i class="fas fa-university"></i> University: Amrita Vishwa Vidyapeetham</p>
+                    <p><i class="fas fa-layer-group"></i> Current Semester: 3rd</p>
+                    <div class="buttons">
+                        <button class="btn btn-edit">Edit Profile</button>
+                    </div>
+                </div>
+
+                <!-- Editable Form -->
+                <div class="edit-form" style="display: none;">
+                    <input type="text" id="edit-name" placeholder="Name" value="Akshay KS">
+                    <input type="email" id="edit-email" placeholder="Email" value="akshayks1005@gmail.com">
+                    <input type="text" id="edit-username" placeholder="Username" value="akshay_13">
+                    <input type="number" id="edit-age" placeholder="Age" value="19">
+                    <input type="text" id="edit-phone" placeholder="Phone" value="+91-7530001011">
+                    <input type="date" id="edit-dob" value="2005-06-13">
+                    <input type="text" id="edit-major" placeholder="Major" value="Computer Science">
+                    <input type="text" id="edit-university" placeholder="University" value="Amrita Vishwa Vidyapeetham">
+                    <input type="text" id="edit-semester" placeholder="Current Semester" value="3rd">
+                    <div class="buttons">
+                        <button class="btn btn-save" id="save-btn">Save Changes</button>
+                        <button class="btn btn-cancel" id="cancel-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Mood Tab -->
+            <div class="card" id="user-mood" style="display: none;">
+                <h3>Today's Mood</h3>
+            
+                <!-- Mood and Mental Health Status -->
+                <div class="mood-status">
+                    <p><i class="fas fa-smile"></i> <strong>Mood:</strong> Happy</p>
+                    <p><i class="fas fa-heart"></i> <strong>Mental Health Status:</strong> Good</p>
+                    <p><i class="fas fa-thermometer-half"></i> <strong>Stress Level:</strong> Low</p>
+                    <p><i class="fas fa-clock"></i> <strong>Time Logged:</strong> 9:30 AM</p>
+                </div>
+            
+                <!-- Daily Affirmation -->
+                <div class="affirmation">
+                    <h4><i class="fas fa-quote-left"></i> Daily Affirmation</h4>
+                    <blockquote>"I am strong, resilient, and capable of achieving my goals."</blockquote>
+                </div>
+            
+                <!-- Mood Tracking for the Week -->
+                <div class="weekly-tracking">
+                    <h4><i class="fas fa-chart-line"></i> Mood Tracking for the Week:</h4>
+                    <ul class="mood-tracking">
+                        <li>Monday: <i class="fas fa-smile"></i> Happy</li>
+                        <li>Tuesday: <i class="fas fa-frown"></i> Sad</li>
+                        <li>Wednesday: <i class="fas fa-smile"></i> Content</li>
+                        <li>Thursday: <i class="fas fa-tired"></i> Stressed</li>
+                        <li>Friday: <i class="fas fa-smile-beam"></i> Happy</li>
+                    </ul>
+                </div>
+            
+                <!-- Mental Health Tips -->
+                <div class="mental-health-tips">
+                    <h4><i class="fas fa-lightbulb"></i> Mental Health Tip of the Day</h4>
+                    <p>Take a few minutes today to practice mindfulness or meditation. Deep breathing can help reduce stress and improve your overall mood.</p>
+                </div>
+            </div>
+            
+
+            <!-- Mood Trends Tab -->
+            <div class="card" id="mood-trends" style="display: none;">
+                <h3>Mood Trends</h3>
+                <p>Track your mood over the past month:</p>
+                <canvas id="moodChart" width="400" height="200"></canvas>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    const ctx = document.getElementById('moodChart').getContext('2d');
+                    const moodChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                            datasets: [{
+                                label: 'Mood Score',
+                                data: [3, 5, 2, 4],
+                                backgroundColor: 'rgba(22, 160, 133, 0.2)',
+                                borderColor: 'rgba(22, 160, 133, 1)',
+                                borderWidth: 2,
+                                fill: true,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 5
+                                }
+                            }
+                        }
+                    });
+                </script>
+                <br><br>
+                <p class="graph-explanation">
+                    The line chart above displays your mood scores over the past month, measured weekly. Each point on the graph represents your mood rating for that week, with higher scores indicating a more positive mood. 
+                    - A score of 5 signifies an excellent mood, while a score of 1 indicates a significantly lower mood. 
+                    - Use this chart to identify patterns and fluctuations in your emotional well-being, helping you understand what influences your mood.
+                    - If you notice trends that concern you, consider discussing them with a friend or seeking support from a mental health professional.
+                </p>
+                
+            </div>
+
+            <!-- Support -->
+            <div class="card" id="support-chat" style="display: none;">
+                <h3>Support Chat</h3>
+                <p>Chat with a mental health professional:</p>
+                <div class="chat-container">
+                    <div class="chat-history">
+                        <div class="message support">
+                            <img src="support_image.jpeg" alt="Support Avatar" class="avatar">
+                            <div class="message-content">
+                                <p><strong>Support:</strong> Hello! How can I assist you today?</p>
+                                <span class="timestamp">10:00 AM</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="chat-input">
+                        <textarea placeholder="Type your message here..." rows="3"></textarea>
+                        <button class="btn send-btn"><i class="fas fa-paper-plane"></i> Send</button>
+                    </div>
+                </div>
+                <div class="chat-options">
+                    <button class="btn option-btn"><i class="fas fa-phone"></i> Voice Call</button>
+                    <button class="btn option-btn"><i class="fas fa-video"></i> Video Call</button>
+                    <button class="btn option-btn"><i class="fas fa-file-alt"></i> Resources</button>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="card" id="settings" style="display: none;">
+                <h3>Settings</h3>
+                <p>Customize your app preferences:</p>
+            
+                <!-- Enable Notifications -->
+                <div class="setting-item">
+                    <span>Enable Notifications</span>
+                    <label class="switch" style="display: inline;">
+                        <input type="checkbox" id="notification-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            
+                <!-- Dark Mode Toggle -->
+                <div class="setting-item">
+                    <span>Dark Mode</span>
+                    <label class="switch" style="display: inline;">
+                        <input type="checkbox" id="dark-mode-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            
+                <!-- Language Selection -->
+                <div class="setting-item">
+                    <label for="language-select">Language:</label>
+                    <select id="language-select" class="dropdown">
+                        <option value="english">English</option>
+                        <option value="spanish">Spanish</option>
+                        <option value="french">French</option>
+                        <option value="german">German</option>
+                    </select>
+                </div>
+            
+                <!-- Privacy Settings -->
+                <div class="setting-item">
+                    <span>Share Data with Third Parties</span>
+                    <label class="switch" style="display: inline;">
+                        <input type="checkbox" id="data-sharing-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            
+                <!-- Account Management -->
+                <div class="setting-item">
+                    <button class="btn btn-delete-account">Delete Account</button>
+                    <button class="btn btn-save">Save Changes</button>
+                </div>
+            </div>
+            
+    </div>
+
+    <script>
+       // JavaScript to handle tab switching
+document.querySelectorAll('.sidebar ul li').forEach((item, index) => {
+    item.addEventListener('click', function () {
+        document.querySelectorAll('.sidebar ul li').forEach(li => li.classList.remove('active'));
+        this.classList.add('active');
+
+        // Hide all sections initially
+        document.getElementById('user-info').style.display = 'none';
+        document.getElementById('user-mood').style.display = 'none';
+        document.getElementById('mood-trends').style.display = 'none';
+        document.getElementById('support-chat').style.display = 'none';
+        document.getElementById('settings').style.display = 'none';
+
+        // Show the selected section
+        switch (index) {
+            case 0:
+                document.getElementById('user-info').style.display = 'block';
+                break;
+            case 1:
+                document.getElementById('user-mood').style.display = 'block';
+                break;
+            case 2:
+                document.getElementById('mood-trends').style.display = 'block';
+                break;
+            case 3:
+                document.getElementById('support-chat').style.display = 'block';
+                break;
+            case 4:
+                document.getElementById('settings').style.display = 'block';
+                break;
+        }
+    });
+});
+
+// Back button functionality
+document.querySelector('.back-button').addEventListener('click', function() {
+    window.history.back(); 
+});
+
+// Edit button functionality
+document.querySelector('.btn-edit').addEventListener('click', function() {
+    // Hide user details
+    document.querySelector('.details').style.display = 'none';
+    
+    // Show the edit form
+    document.querySelector('.edit-form').style.display = 'block';
+});
+
+document.getElementById('save-btn').addEventListener('click', function() {
+    // Get values from the input fields
+    const name = document.getElementById('edit-name').value;
+    const email = document.getElementById('edit-email').value;
+    const username = document.getElementById('edit-username').value;
+    const age = document.getElementById('edit-age').value;
+    const phone = document.getElementById('edit-phone').value;
+    const dob = document.getElementById('edit-dob').value;
+    const major = document.getElementById('edit-major').value;
+    const university = document.getElementById('edit-university').value;
+    const semester = document.getElementById('edit-semester').value;
+
+    // Update user information
+    document.querySelector('.details h3').innerText = name;
+    document.querySelector('.details p:nth-child(2)').innerHTML = `<i class="fas fa-envelope"></i>Email: ${email}`;
+    document.querySelector('.details p:nth-child(3)').innerHTML = `<i class="fas fa-user"></i>Username: ${username}`;
+    document.querySelector('.details p:nth-child(4)').innerHTML = `<i class="fas fa-birthday-cake"></i>Age: ${age}`;
+    document.querySelector('.details p:nth-child(5)').innerHTML = `<i class="fas fa-phone"></i> Phone: ${phone}`;
+    document.querySelector('.details p:nth-child(6)').innerHTML = `<i class="fas fa-calendar-alt"></i>Date of Birth: ${new Date(dob).toLocaleDateString()}`;
+    document.querySelector('.details p:nth-child(7)').innerHTML = `<i class="fas fa-graduation-cap"></i>Major: ${major}`;
+    document.querySelector('.details p:nth-child(8)').innerHTML = `<i class="fas fa-university"></i>University: ${university}`;
+    document.querySelector('.details p:nth-child(9)').innerHTML = `<i class="fas fa-layer-group"></i>Current Semester: ${semester}`;
+
+
+    // Hide the edit form and show user details
+    document.querySelector('.edit-form').style.display = 'none';
+    document.querySelector('.details').style.display = 'block';
+});
+
+document.getElementById('cancel-btn').addEventListener('click', function() {
+    // Hide the edit form and show user details
+    document.querySelector('.edit-form').style.display = 'none';
+    document.querySelector('.details').style.display = 'block';
+});
+    </script>
+</body>
+</html>
